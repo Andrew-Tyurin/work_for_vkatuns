@@ -1,8 +1,8 @@
 from django.shortcuts import render
-
+from data import *
 
 def vacancies_page(request):
-    return render(request, 'vacancies_app/vacancies.html', {})
+    return render(request, 'vacancies_app/vacancies.html', {'jobs': jobs})
 
 
 def one_vacancy(request, vacancies_id):
