@@ -1,12 +1,18 @@
 {% extends 'main_page_app/main_layout.html' %}
 {% load humanize %}
-{% block custom_title %}Все вакансии{% endblock %}
+{% block custom_title %}Вакансии{% endblock %}
 
 {% block custom_body %}
     <main class="container mt-3">
         <section>
             <h1 class="h1 text-center mx-auto mt-4 pt-5" style="font-size: 70px;">
-                <strong>Все вакансии</strong></h1>
+                <strong>
+                    {% if specialty_ru %}
+                        специализация - {{ specialty_ru }}
+                    {% else %}
+                        Все вакансии
+                    {% endif %}
+                </strong></h1>
             <p class="text-center pt-1">{{ jobs|length }} вакансий</p>
             <div class="row mt-5">
                 {% for job in jobs %}
@@ -22,8 +28,8 @@
                                         <p class="text-muted pt-1">Опубликовано - {{ job.posted }}</p>
                                     </div>
                                     <div class="col-12 col-md-4 col-lg-3 d-flex align-items-end">
-                                        <a href="#">
-                                            <img src="https://place-hold.it/130x80" width="130" height="80" alt="">
+                                        <a href="{% url 'one_vacancy' job.id %}">
+                                            <img src="https://ru-static.z-dn.net/files/dae/083a1cda3a973e742a5f44725c2920ed.jpg" width="130" height="80" alt="">
                                         </a>
                                     </div>
                                 </div>
