@@ -8,6 +8,4 @@ handler404 = custom_handler404
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main_page_app.urls')),
-    path('vacancies/', include('vacancies_app.urls')),
-    path('companies/', include('companies_app.urls')),
 ]
