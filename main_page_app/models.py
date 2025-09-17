@@ -25,7 +25,7 @@ class Specialty(models.Model):
     picture = models.URLField(default='https://place-hold.it/100x60', blank=True)
 
     def __str__(self):
-        return f'{self.pk} - {self.title}'
+        return self.title
 
     class Meta:
         verbose_name = 'Специализации'
@@ -39,7 +39,7 @@ class Vacancy(models.Model):
         on_delete=models.CASCADE,
         to_field="code",
         # to_field="code" - Django будет искать связь не по id, а по полю code. т.е "specialty": "backend" связь с "code": "backend",
-        related_name="vacancies"
+        related_name="vacancies",
         # управляет только обратной связью (как из Specialty получить все связанные Vacancy и наоборот).
     )
     company = models.ForeignKey(
@@ -47,7 +47,7 @@ class Vacancy(models.Model):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="vacancies"
+        related_name="vacancies",
     )
     skills = models.TextField(blank=True)
     description = models.TextField(blank=True)

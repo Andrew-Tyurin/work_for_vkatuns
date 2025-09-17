@@ -8,22 +8,32 @@
     <div class="row mt-5">
         <div class="col-12 col-lg-2">
             <div class="pl-3 mb-5">
-                <p><a href="#">Назад</a></p>
+                <p><a href="..">Назад</a></p>
             </div>
         </div>
         <div class="col-12 col-lg-8">
             <section class="pl-3">
                 <a href="#"><img src="https://place-hold.it/130x80" width="130" height="80" alt=""></a>
-                <p>id_вакансии - {{ job.id }}</p>
-                <p>id_компании - {{ company.id }}</p>
+                <p>
+                    id_вакансии - {{ vacancy_in_the_company.id }}<br>
+                    id_компании - {{ vacancy_in_the_company.company.id }}
+                </p>
                 <div class="d-flex align-items-baseline align-content-baseline">
-                    <h1 class="h2 mt-4 font-weight-bold">{{ job.title }}</h1>
-                    <p class="m-0 pl-3">{{ job.salary_from|intcomma }} - {{ job.salary_to|intcomma }} Р</p>
+                    <h1 class="h2 mt-4 font-weight-bold">{{ vacancy_in_the_company.title }}</h1>
+                    <p class="m-0 pl-3">
+                        {{ vacancy_in_the_company.salary_min|intcomma }}
+                        -
+                        {{ vacancy_in_the_company.salary_max|intcomma }} Р
+                    </p>
                 </div>
-                <p class="mt-2">{{ job.skills }}</p>
-                <p class="text-muted mb-4">{{ company.title }} ({{ company.employee_count }} - человек), {{ company.location }}</p>
-                <p>{{ company.description }}</p>
-                {{ job.description|safe }}
+                <p class="mt-2">Навыки: {{ vacancy_in_the_company.skills }}</p>
+                <p class="text-muted mb-4">Компания:
+                    {{ vacancy_in_the_company.company.name }}
+                    ({{ vacancy_in_the_company.company.employee_count }} - человек),
+                    {{ vacancy_in_the_company.company.location }}
+                </p>
+                <p>{{ vacancy_in_the_company.company.description }}</p>
+                {{ vacancy_in_the_company.description|safe }}
                 <div style="line-height: 1.8;">
                     <form action="/echo" class="card mt-4 mb-3" enctype="multipart/form-data">
                         <div class="card-body mx-3">

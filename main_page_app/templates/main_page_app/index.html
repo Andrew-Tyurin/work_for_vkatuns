@@ -32,15 +32,19 @@
         <section class="mt-5 pt-3">
             <h2 class="h2 font-weight-normal text-center mb-5">Вакансии по рубрикам</h2>
             <div class="row mb-0">
-                {% for item in specialties %}
+                {% for specialty in specialty_list %}
                     <div class="col-6 col-md-6 col-lg-3">
                         <div class="card pt-4 text-center mb-4">
                             <img class="mx-auto d-block"
-                                 src="{% static 'main_page_app/specialties/specty_' %}{{ item.code }}.png" width="80"
-                                 height="80" alt="">
+                                 src="{{ specialty.picture }}" width="100"
+                                 height="60" alt="{{ specialty.code }}">
                             <div class="card-body">
-                                <p class="card-text mb-2">{{ item.title }}</p>
-                                <p class="card-text"><a href="{% url 'vacancies_specialty' item.code %}">N вакансий</a></p>
+                                <p class="card-text mb-2">{{ specialty.title }}</p>
+                                <p class="card-text">
+                                    <a href="{% url 'vacancies_specialty' specialty.code %}">
+                                        {{ specialty.count }} - вакансий
+                                    </a>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -51,16 +55,16 @@
         <section class="my-5 pt-3">
             <h2 class="h2 font-weight-normal text-center mb-5">Нам доверяют лучшие компании</h2>
             <div class="row mb-0">
-                {% for company in companies %}
+                {% for company in company_list %}
                     <div class="col-6 col-md-6 col-lg-3">
                         <div class="card pt-4 text-center mb-4">
                             <a href="#" style="max-width: 150px;" class="mx-auto d-block">
                                 <img class="mx-auto d-block mw-100"
-                                     src="{% static 'main_page_app/logo/' %}{{ company.logo }}" alt="">
+                                     src="{{ company.logo }}" alt="логотип - {{ company.name }}">
                             </a>
                             <div class="card-body">
-                                <p class="card-text">{{ company.title }}</p>
-                                <p class="card-text"><a href="{% url 'companies_page' company.id %}">N вакансий</a></p>
+                                <p class="card-text">Компания - {{ company.name }}</p>
+                                <p class="card-text"><a href="{% url 'companies_page' company.id %}">{{ company.count }} - вакансий</a></p>
                             </div>
                         </div>
                     </div>
