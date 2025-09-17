@@ -1,7 +1,7 @@
 from main_page_app import models
 from data import *
 
-flag_Company, flag_Vacancy, flag_Specialty = False, False, False
+flag_Company, flag_Specialty, flag_Vacancy = False, False, False
 
 if flag_Company:
     for item in companies:
@@ -13,18 +13,6 @@ if flag_Company:
         )
         print(obj)
 
-if flag_Vacancy:
-    for item in jobs:
-        obj = models.Vacancy.objects.create(
-            title=item['title'],
-            company_id=int(item['company']),
-            skills=item['skills'],
-            description=item['description'],
-            salary_min=int(item['salary_from']),
-            salary_max=int(item['salary_to']),
-        )
-        print(obj)
-
 if flag_Specialty:
     for item in specialties:
         obj = models.Specialty.objects.create(
@@ -33,7 +21,20 @@ if flag_Specialty:
         )
         print(obj)
 
-db_check = True
+if flag_Vacancy:
+    for item in jobs:
+        obj = models.Vacancy.objects.create(
+            title=item['title'],
+            specialty_id=item['specialty'],
+            company_id=int(item['company']),
+            skills=item['skills'],
+            description=item['description'],
+            salary_min=int(item['salary_from']),
+            salary_max=int(item['salary_to']),
+        )
+        print(obj)
+
+db_check = False
 if db_check:
     for obj in models.Company.objects.all():
         print(obj)

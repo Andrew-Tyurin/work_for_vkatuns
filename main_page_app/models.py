@@ -17,9 +17,38 @@ class Company(models.Model):
         ordering = ['pk']
 
 
+class Specialty(models.Model):
+    # т.к Vacancy связывается с нами ForeignKey не по id
+    # а по code, тогда нужно объявить что - это поле уникально
+    code = models.CharField(max_length=30, unique=True)
+    title = models.CharField(max_length=30)
+    picture = models.URLField(default='https://place-hold.it/100x60', blank=True)
+
+    def __str__(self):
+        return f'{self.pk} - {self.title}'
+
+    class Meta:
+        verbose_name = 'Специализации'
+        verbose_name_plural = verbose_name
+
+
 class Vacancy(models.Model):
     title = models.CharField(max_length=150)
-    company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
+    specialty = models.ForeignKey(
+        'Specialty',
+        on_delete=models.CASCADE,
+        to_field="code",
+        # to_field="code" - Django будет искать связь не по id, а по полю code. т.е "specialty": "backend" связь с "code": "backend",
+        related_name="vacancies"
+        # управляет только обратной связью (как из Specialty получить все связанные Vacancy и наоборот).
+    )
+    company = models.ForeignKey(
+        'Company',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="vacancies"
+    )
     skills = models.TextField(blank=True)
     description = models.TextField(blank=True)
     salary_min = models.IntegerField(default=0, blank=True)
@@ -38,16 +67,3 @@ class Vacancy(models.Model):
         verbose_name = 'Вакансии'
         verbose_name_plural = verbose_name
         ordering = ['id']
-
-
-class Specialty(models.Model):
-    code = models.CharField(max_length=30)
-    title = models.CharField(max_length=30)
-    picture = models.URLField(default='https://place-hold.it/100x60', blank=True)
-
-    def __str__(self):
-        return f'{self.pk} - {self.title}'
-
-    class Meta:
-        verbose_name = 'Специализации'
-        verbose_name_plural = verbose_name
