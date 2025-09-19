@@ -1,38 +1,10 @@
-from django.http import HttpResponseNotFound, HttpResponseServerError, Http404
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
+from django.http import HttpResponseNotFound, HttpResponseServerError, HttpRequest, HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Count
 from . import models
 
 
-def request_verification(name_patch, dynamic_path):
-    """
-        Проверяет, какой URL вызван, и возвращает объект из нужной модели по
-        динамическому пути. Если объекта такого нету, то вызовется исключение
-        DoesNotExist. Которые мы обработаем -> raise Http404. Exception нужен
-        в случае если name_patch не соответсвует условиям, тогда функция
-        request_verification вызвана с неправильными аргументами
-    """
-    try:
-
-        if name_patch == 'vacancies_specialty':
-            return models.Specialty.objects.get(code=dynamic_path)
-
-        elif name_patch == 'companies_page':
-            return models.Company.objects.get(id=dynamic_path)
-
-        elif name_patch == 'one_vacancy':
-            return models.Vacancy.objects.get(id=dynamic_path)
-
-        raise Exception
-
-    except ObjectDoesNotExist:
-        # ObjectDoesNotExist - ловит всё семейство DoesNotExist(род класс)
-        # models.Specialty.DoesNotExist - ловит исключение конкретной модели
-        raise Http404
-
-
-def main_page(request):
+def main_page(request: HttpRequest) -> HttpResponse:
     specialty_list = models.Specialty.objects.annotate(count=Count('vacancies'))
     company_list = models.Company.objects.annotate(count=Count('vacancies'))
     return render(
@@ -45,7 +17,7 @@ def main_page(request):
     )
 
 
-def vacancies_page(request):
+def vacancies_page(request: HttpRequest) -> HttpResponse:
     vacancies = models.Vacancy.objects.all()
     return render(
         request,
@@ -54,9 +26,9 @@ def vacancies_page(request):
     )
 
 
-def vacancies_specialty(request, group_of_vacancies):
+def vacancies_specialty(request: HttpRequest, group_of_vacancies: str) -> HttpResponse:
     # request.resolver_match.view_name - возвращает имя указанное в urls name="...."
-    specialty_ru = request_verification(request.resolver_match.view_name, group_of_vacancies)
+    specialty_ru = get_object_or_404(models.Specialty, code=group_of_vacancies)
     vacancies = models.Vacancy.objects.filter(specialty=group_of_vacancies)
 
     return render(
@@ -66,8 +38,8 @@ def vacancies_specialty(request, group_of_vacancies):
     )
 
 
-def companies_page(request, companies_id):
-    company = request_verification(request.resolver_match.view_name, companies_id)
+def companies_page(request: HttpRequest, companies_id: int) -> HttpResponse:
+    company = get_object_or_404(models.Company, id=companies_id)
     vacancies = models.Vacancy.objects.filter(company_id=companies_id)
 
     return render(
@@ -77,8 +49,8 @@ def companies_page(request, companies_id):
     )
 
 
-def one_vacancy(request, vacancy_id):
-    vacancy_in_the_company = request_verification(request.resolver_match.view_name, vacancy_id)
+def one_vacancy(request: HttpRequest, vacancy_id: int) -> HttpResponse:
+    vacancy_in_the_company = get_object_or_404(models.Vacancy, id=vacancy_id)
 
     return render(
         request,
