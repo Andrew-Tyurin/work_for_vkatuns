@@ -7,6 +7,7 @@ from . import models
 def main_page(request: HttpRequest) -> HttpResponse:
     specialty_list = models.Specialty.objects.annotate(count=Count('vacancies'))
     company_list = models.Company.objects.annotate(count=Count('vacancies'))
+
     return render(
         request,
         'main_page_app/index.html',
@@ -19,6 +20,7 @@ def main_page(request: HttpRequest) -> HttpResponse:
 
 def vacancies_page(request: HttpRequest) -> HttpResponse:
     vacancies = models.Vacancy.objects.all()
+
     return render(
         request,
         'main_page_app/vacancies.html',

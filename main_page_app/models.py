@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Company(models.Model):
@@ -10,6 +11,9 @@ class Company(models.Model):
 
     def __str__(self):
         return f'компания - {self.name}; находится - {self.location}'
+
+    def get_absolute_url(self):
+        return reverse('companies_page', kwargs={'companies_id': self.id})
 
     class Meta:
         verbose_name = 'Компании'
@@ -26,6 +30,9 @@ class Specialty(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('vacancies_specialty', args=(self.code,))  # или kwargs={'group_of_vacancies': self.code}
 
     class Meta:
         verbose_name = 'Специализации'
@@ -62,6 +69,9 @@ class Vacancy(models.Model):
             f'сред-зарплата - {average_salary}; '
             f'{self.company}.'
         )
+
+    def get_absolute_url(self):
+        return reverse('one_vacancy', args=(self.id,))
 
     class Meta:
         verbose_name = 'Вакансии'

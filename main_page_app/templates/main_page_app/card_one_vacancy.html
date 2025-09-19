@@ -16,7 +16,8 @@
                 <a href="#"><img src="https://place-hold.it/130x80" width="130" height="80" alt=""></a>
                 <p>
                     id_вакансии - {{ vacancy_in_the_company.id }}<br>
-                    id_компании - {{ vacancy_in_the_company.company.id }}
+                    id_компании - {{ vacancy_in_the_company.company.id }}<br>
+                    Полынй путь - {{ vacancy_in_the_company.get_absolute_url }}
                 </p>
                 <div class="d-flex align-items-baseline align-content-baseline">
                     <h1 class="h2 mt-4 font-weight-bold">{{ vacancy_in_the_company.title }}</h1>

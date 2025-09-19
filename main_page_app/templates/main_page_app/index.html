@@ -41,7 +41,7 @@
                             <div class="card-body">
                                 <p class="card-text mb-2">{{ specialty.title }}</p>
                                 <p class="card-text">
-                                    <a href="{% url 'vacancies_specialty' specialty.code %}">
+                                    <a href="{{ specialty.get_absolute_url }}">
                                         {{ specialty.count }} - вакансий
                                     </a>
                                 </p>
@@ -64,7 +64,7 @@
                             </a>
                             <div class="card-body">
                                 <p class="card-text">Компания - {{ company.name }}</p>
-                                <p class="card-text"><a href="{% url 'companies_page' company.id %}">{{ company.count }} - вакансий</a></p>
+                                <p class="card-text"><a href="{{ company.get_absolute_url }}">{{ company.count }} - вакансий</a></p>
                             </div>
                         </div>
                     </div>
