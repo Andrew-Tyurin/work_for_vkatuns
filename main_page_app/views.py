@@ -28,7 +28,7 @@ def vacancies_page(request: HttpRequest) -> HttpResponse:
     )
 
 
-def vacancies_specialty(request: HttpRequest, group_of_vacancies: str) -> HttpResponse:
+def vacancies_by_specialty(request: HttpRequest, group_of_vacancies: str) -> HttpResponse:
     # request.resolver_match.view_name - возвращает имя указанное в urls name="...."
     specialty_ru = get_object_or_404(models.Specialty, code=group_of_vacancies)
     vacancies = models.Vacancy.objects.filter(specialty=group_of_vacancies)

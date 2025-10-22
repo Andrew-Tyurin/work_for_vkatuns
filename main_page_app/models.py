@@ -3,11 +3,11 @@ from django.urls import reverse
 
 
 class Company(models.Model):
-    name = models.CharField(max_length=50)
-    location = models.CharField(max_length=50)
-    logo = models.URLField(default='https://place-hold.it/100x60', blank=True)
-    description = models.TextField(blank=True)
-    employee_count = models.IntegerField(default=0)
+    name = models.CharField(max_length=50, verbose_name='Название')
+    location = models.CharField(max_length=50, verbose_name='город')
+    logo = models.ImageField(upload_to='companies', default='https://place-hold.it/100x60', blank=True, verbose_name='логотип')
+    description = models.TextField(blank=True, verbose_name='инф. о компании')
+    employee_count = models.IntegerField(default=0, verbose_name='кол-во сотрудников')
 
     def __str__(self):
         return f'компания - {self.name}; находится - {self.location}'
@@ -16,17 +16,15 @@ class Company(models.Model):
         return reverse('companies_page', kwargs={'companies_id': self.id})
 
     class Meta:
-        verbose_name = 'Компании'
-        verbose_name_plural = verbose_name
+        verbose_name = 'Компанию'
+        verbose_name_plural = 'Компании'
         ordering = ['pk']
 
 
 class Specialty(models.Model):
-    # т.к Vacancy связывается с нами ForeignKey не по id
-    # а по code, тогда нужно объявить что - это поле уникально
-    code = models.CharField(max_length=30, unique=True)
-    title = models.CharField(max_length=30)
-    picture = models.URLField(default='https://place-hold.it/100x60', blank=True)
+    code = models.CharField(max_length=30, unique=True, verbose_name='код')
+    title = models.CharField(max_length=30, verbose_name='title')
+    picture = models.ImageField(upload_to='specialties', default='https://place-hold.it/100x60', blank=True, verbose_name='картинка')
 
     def __str__(self):
         return self.title
@@ -35,19 +33,18 @@ class Specialty(models.Model):
         return reverse('vacancies_specialty', args=(self.code,))  # или kwargs={'group_of_vacancies': self.code}
 
     class Meta:
-        verbose_name = 'Специализации'
-        verbose_name_plural = verbose_name
+        verbose_name = 'Специализацию'
+        verbose_name_plural = 'Специализации'
 
 
 class Vacancy(models.Model):
-    title = models.CharField(max_length=150)
+    title = models.CharField(max_length=150, verbose_name='Название')
     specialty = models.ForeignKey(
         'Specialty',
         on_delete=models.CASCADE,
         to_field="code",
-        # to_field="code" - Django будет искать связь не по id, а по полю code. т.е "specialty": "backend" связь с "code": "backend",
         related_name="vacancies",
-        # управляет только обратной связью (как из Specialty получить все связанные Vacancy и наоборот).
+        verbose_name='Специализация'
     )
     company = models.ForeignKey(
         'Company',
@@ -55,12 +52,13 @@ class Vacancy(models.Model):
         null=True,
         blank=True,
         related_name="vacancies",
+        verbose_name='Компания',
     )
-    skills = models.TextField(blank=True)
-    description = models.TextField(blank=True)
-    salary_min = models.IntegerField(default=0, blank=True)
-    salary_max = models.IntegerField(default=0, blank=True)
-    published_at = models.DateField(auto_now_add=True)
+    skills = models.TextField(blank=True, verbose_name='Навыки')
+    description = models.TextField(blank=True, verbose_name='Текст')
+    salary_min = models.IntegerField(default=0, blank=True, verbose_name='Зарплата от')
+    salary_max = models.IntegerField(default=0, blank=True, verbose_name='Зарплата до')
+    published_at = models.DateField(auto_now_add=True, verbose_name='Опубликовано')
 
     def __str__(self):
         average_salary = (self.salary_min + self.salary_max) // 2
@@ -74,6 +72,6 @@ class Vacancy(models.Model):
         return reverse('one_vacancy', args=(self.id,))
 
     class Meta:
-        verbose_name = 'Вакансии'
-        verbose_name_plural = verbose_name
+        verbose_name = 'Вакансию'
+        verbose_name_plural = 'Вакансии'
         ordering = ['id']
