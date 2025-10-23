@@ -13,7 +13,7 @@ class Company(models.Model):
         return f'компания - {self.name}; находится - {self.location}'
 
     def get_absolute_url(self):
-        return reverse('companies_page', kwargs={'companies_id': self.id})
+        return reverse('vacancies_by_companies', kwargs={'company_id': self.id}) # или args=(self.id,)
 
     class Meta:
         verbose_name = 'Компанию'
@@ -30,7 +30,7 @@ class Specialty(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('vacancies_specialty', args=(self.code,))  # или kwargs={'group_of_vacancies': self.code}
+        return reverse('vacancies_by_specialty', args=(self.code,))  # или kwargs={'specialty_slug': self.code}
 
     class Meta:
         verbose_name = 'Специализацию'

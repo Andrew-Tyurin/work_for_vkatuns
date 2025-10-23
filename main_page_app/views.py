@@ -1,63 +1,56 @@
-from django.http import HttpResponseNotFound, HttpResponseServerError, HttpRequest, HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseNotFound, HttpResponseServerError
+from django.shortcuts import get_object_or_404
 from django.db.models import Count
-from . import models
+from django.views.generic import TemplateView, ListView, DetailView
+from .models import Specialty, Company, Vacancy
 
 
-def main_page(request: HttpRequest) -> HttpResponse:
-    specialty_list = models.Specialty.objects.annotate(count=Count('vacancies'))
-    company_list = models.Company.objects.annotate(count=Count('vacancies'))
+class MainPageView(TemplateView):
+    template_name = 'main_page_app/index.html'
 
-    return render(
-        request,
-        'main_page_app/index.html',
-        {
-            'specialty_list': specialty_list,
-            'company_list': company_list,
-        },
-    )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['specialty_list'] = Specialty.objects.annotate(count=Count('vacancies'))
+        context['company_list'] = Company.objects.annotate(count=Count('vacancies'))
+        return context
 
 
-def vacancies_page(request: HttpRequest) -> HttpResponse:
-    vacancies = models.Vacancy.objects.all()
+class AllVacanciesView(ListView):
+    model = Vacancy
+    template_name = 'main_page_app/vacancies.html'
 
-    return render(
-        request,
-        'main_page_app/vacancies.html',
-        {'vacancies': vacancies},
-    )
+    def get_queryset(self):
+        return super().get_queryset().select_related('company')
 
 
-def vacancies_by_specialty(request: HttpRequest, group_of_vacancies: str) -> HttpResponse:
-    # request.resolver_match.view_name - возвращает имя указанное в urls name="...."
-    specialty_ru = get_object_or_404(models.Specialty, code=group_of_vacancies)
-    vacancies = models.Vacancy.objects.filter(specialty=group_of_vacancies)
+class VacanciesBySpecialtyView(AllVacanciesView, ListView):
+    allow_empty = True
 
-    return render(
-        request,
-        'main_page_app/vacancies.html',
-        {'vacancies': vacancies, 'specialty_ru': specialty_ru},
-    )
+    def get_queryset(self):
+        specialty = self.kwargs['specialty_slug']
+        return Vacancy.objects.filter(specialty=specialty).select_related('company')
 
-
-def companies_page(request: HttpRequest, companies_id: int) -> HttpResponse:
-    company = get_object_or_404(models.Company, id=companies_id)
-    vacancies = models.Vacancy.objects.filter(company_id=companies_id)
-
-    return render(
-        request,
-        'main_page_app/vacancies.html',
-        {'vacancies': vacancies, 'company': company},
-    )
+    def get_context_data(self, **kwargs):
+        specialty = get_object_or_404(Specialty, code=self.kwargs['specialty_slug'])
+        return super().get_context_data(specialty_ru=specialty.title, **kwargs)
 
 
-def one_vacancy(request: HttpRequest, vacancy_id: int) -> HttpResponse:
-    vacancy_in_the_company = get_object_or_404(models.Vacancy, id=vacancy_id)
+class VacanciesByCompaniesView(AllVacanciesView, ListView):
+    allow_empty = True
 
-    return render(
-        request,
-        'main_page_app/card_one_vacancy.html',
-        {'vacancy_in_the_company': vacancy_in_the_company})
+    def get_queryset(self):
+        company = self.kwargs['company_id']
+        return Vacancy.objects.filter(company=company).select_related('company')
+
+    def get_context_data(self, **kwargs):
+        company = get_object_or_404(Company, id=self.kwargs['company_id'])
+        return super().get_context_data(company=company, **kwargs)
+
+
+class OneVacancyView(DetailView):
+    template_name = 'main_page_app/card_one_vacancy.html'
+    model = Vacancy
+    pk_url_kwarg = 'vacancy_id'
 
 
 def custom_handler404(request, exception):

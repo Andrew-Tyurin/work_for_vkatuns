@@ -14,24 +14,24 @@
         <div class="col-12 col-lg-8">
             <section class="pl-3">
                 <a href="#">
-                    <img src="{{ vacancy_in_the_company.company.logo.url }}" width="130" height="80" alt="">
+                    <img src="{{ object.company.logo.url }}" width="130" height="80" alt="">
                 </a>
                 <div class="d-flex align-items-baseline align-content-baseline">
-                    <h1 class="h2 mt-4 font-weight-bold">{{ vacancy_in_the_company.title }}</h1>
+                    <h1 class="h2 mt-4 font-weight-bold">{{ object.title }}</h1>
                     <p class="m-0 pl-3">
-                        {{ vacancy_in_the_company.salary_min|intcomma }}
+                        {{ object.salary_min|intcomma }}
                         -
-                        {{ vacancy_in_the_company.salary_max|intcomma }} Р
+                        {{ object.salary_max|intcomma }} Р
                     </p>
                 </div>
-                <p class="mt-2">Навыки: {{ vacancy_in_the_company.skills }}</p>
+                <p class="mt-2">Навыки: {{ object.skills }}</p>
                 <p class="text-muted mb-4">Компания:
-                    {{ vacancy_in_the_company.company.name }}
-                    ({{ vacancy_in_the_company.company.employee_count }} - человек),
-                    {{ vacancy_in_the_company.company.location }}
+                    {{ object.company.name }}
+                    ({{ object.company.employee_count }} - человек),
+                    {{ object.company.location }}
                 </p>
-                <p>{{ vacancy_in_the_company.company.description }}</p>
-                    {{ vacancy_in_the_company.description|safe }}
+                <p>{{ object.company.description }}</p>
+                    {{ object.description|safe }}
                 <div style="line-height: 1.8;">
                     <form action="/echo" class="card mt-4 mb-3" enctype="multipart/form-data">
                         <div class="card-body mx-3">
