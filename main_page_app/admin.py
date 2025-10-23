@@ -26,6 +26,10 @@ class VacancyAdmin(admin.ModelAdmin):
         'show_logo_company',
     )
 
+    def get_queryset(self, request):
+        objects = super().get_queryset(request)
+        return objects.select_related('company', 'specialty')
+
     def show_logo_company(self, obj):
         return mark_safe(f'<img src="{obj.company.logo.url}" alt="logo" width="50"/>')
 
