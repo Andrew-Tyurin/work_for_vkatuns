@@ -12,26 +12,30 @@
             </div>
         </div>
         <div class="col-12 col-lg-8">
-            <section class="pl-3">
-                <a href="#">
-                    <img src="{{ object.company.logo.url }}" width="130" height="80" alt="">
-                </a>
-                <div class="d-flex align-items-baseline align-content-baseline">
-                    <h1 class="h2 mt-4 font-weight-bold">{{ object.title }}</h1>
-                    <p class="m-0 pl-3">
-                        {{ object.salary_min|intcomma }}
-                        -
-                        {{ object.salary_max|intcomma }} Р
+            <section class="px-3 border">
+
+                <div>
+                    <a href="#">
+                        <img src="{{ object.company.logo.url }}" width="130" height="80" alt="">
+                    </a>
+                    <div class="d-flex align-items-baseline align-content-baseline">
+                        <h1 class="h2 mt-4 font-weight-bold">{{ object.title }}</h1>
+                        <p class="m-0 pl-3">
+                            {{ object.salary_min|intcomma }}
+                            -
+                            {{ object.salary_max|intcomma }} Р
+                        </p>
+                    </div>
+                    <p class="mt-2">Навыки: {{ object.skills }}</p>
+                    <p class="text-muted mb-4">Компания:
+                        {{ object.company.name }}
+                        ({{ object.company.employee_count }} - человек),
+                        {{ object.company.location }}
                     </p>
-                </div>
-                <p class="mt-2">Навыки: {{ object.skills }}</p>
-                <p class="text-muted mb-4">Компания:
-                    {{ object.company.name }}
-                    ({{ object.company.employee_count }} - человек),
-                    {{ object.company.location }}
-                </p>
-                <p>{{ object.company.description }}</p>
+                    <p>{{ object.company.description }}</p>
                     {{ object.description|safe }}
+                </div>
+
                 <div style="line-height: 1.8;">
                     <form action="/echo" class="card mt-4 mb-3" enctype="multipart/form-data">
                         <div class="card-body mx-3">
@@ -53,6 +57,7 @@
                         </div>
                     </form>
                 </div>
+
             </section>
         </div>
     </div>

@@ -1,16 +1,26 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Company(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название')
-    location = models.CharField(max_length=50, verbose_name='город')
-    logo = models.ImageField(upload_to='companies', default='https://place-hold.it/100x60', blank=True, verbose_name='логотип')
-    description = models.TextField(blank=True, verbose_name='инф. о компании')
-    employee_count = models.IntegerField(default=0, verbose_name='кол-во сотрудников')
+    location = models.CharField(max_length=50, verbose_name='Город')
+    logo = models.ImageField(upload_to='companies', default='https://place-hold.it/100x60', blank=True, verbose_name='Логотип')
+    description = models.TextField(blank=True, verbose_name='Инф. о компании')
+    employee_count = models.IntegerField(default=0, verbose_name='Кол-во сотрудников')
+    owner = models.OneToOneField(
+        User,
+        on_delete=models.SET_NULL,
+        verbose_name='Владелец',
+        related_name='owner',
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
-        return f'компания - {self.name}; находится - {self.location}'
+        return f'Компания - {self.name}; Находится - {self.location}'
 
     def get_absolute_url(self):
         return reverse('vacancies_by_companies', kwargs={'company_id': self.id}) # или args=(self.id,)
@@ -22,9 +32,9 @@ class Company(models.Model):
 
 
 class Specialty(models.Model):
-    code = models.CharField(max_length=30, unique=True, verbose_name='код')
-    title = models.CharField(max_length=30, verbose_name='title')
-    picture = models.ImageField(upload_to='specialties', default='https://place-hold.it/100x60', blank=True, verbose_name='картинка')
+    code = models.CharField(max_length=30, unique=True, verbose_name='Код')
+    title = models.CharField(max_length=30, verbose_name='Направление')
+    picture = models.ImageField(upload_to='specialties', default='https://place-hold.it/100x60', blank=True, verbose_name='Картинка')
 
     def __str__(self):
         return self.title
@@ -49,8 +59,6 @@ class Vacancy(models.Model):
     company = models.ForeignKey(
         'Company',
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,
         related_name="vacancies",
         verbose_name='Компания',
     )
@@ -61,12 +69,7 @@ class Vacancy(models.Model):
     published_at = models.DateField(auto_now_add=True, verbose_name='Опубликовано')
 
     def __str__(self):
-        average_salary = (self.salary_min + self.salary_max) // 2
-        return (
-            f'id: {self.pk}; вакансия - {self.title}; '
-            f'сред-зарплата - {average_salary}; '
-            f'{self.company}.'
-        )
+        return f'{self.company}; Вакансия - {self.title};'
 
     def get_absolute_url(self):
         return reverse('one_vacancy', args=(self.id,))
@@ -75,3 +78,24 @@ class Vacancy(models.Model):
         verbose_name = 'Вакансию'
         verbose_name_plural = 'Вакансии'
         ordering = ['id']
+
+
+class Application(models.Model):
+    written_username = models.CharField(max_length=80, verbose_name='Имя')
+    written_phone = PhoneNumberField(region='RU', verbose_name='Телефон')
+    written_cover_letter = models.TextField(verbose_name='Сопроводительное письмо')
+    vacancy = models.ForeignKey(
+        Vacancy,
+        related_name='applications',
+        verbose_name='Вакансия',
+        on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        User,
+        related_name='applications',
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+    )
+
+    def __str__(self):
+        return f'{self.written_username}; откликнулся: {self.vacancy}'

@@ -1,3 +1,4 @@
+django-phonenumber-field
 asgiref==3.9.1
 astpretty==3.0.0
 astroid==2.15.8
