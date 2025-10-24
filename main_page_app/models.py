@@ -22,13 +22,13 @@ class Company(models.Model):
     def __str__(self):
         return f'Компания - {self.name}; Находится - {self.location}'
 
-    def get_absolute_url(self):
-        return reverse('vacancies_by_companies', kwargs={'company_id': self.id}) # или args=(self.id,)
-
     class Meta:
         verbose_name = 'Компанию'
         verbose_name_plural = 'Компании'
         ordering = ['pk']
+
+    def get_absolute_url(self):
+        return reverse('vacancies_by_companies', kwargs={'company_id': self.id}) # или args=(self.id,)
 
 
 class Specialty(models.Model):
@@ -39,12 +39,12 @@ class Specialty(models.Model):
     def __str__(self):
         return self.title
 
-    def get_absolute_url(self):
-        return reverse('vacancies_by_specialty', args=(self.code,))  # или kwargs={'specialty_slug': self.code}
-
     class Meta:
         verbose_name = 'Специализацию'
         verbose_name_plural = 'Специализации'
+
+    def get_absolute_url(self):
+        return reverse('vacancies_by_specialty', args=(self.code,))  # или kwargs={'specialty_slug': self.code}
 
 
 class Vacancy(models.Model):
@@ -71,13 +71,13 @@ class Vacancy(models.Model):
     def __str__(self):
         return f'{self.company}; Вакансия - {self.title};'
 
-    def get_absolute_url(self):
-        return reverse('one_vacancy', args=(self.id,))
-
     class Meta:
         verbose_name = 'Вакансию'
         verbose_name_plural = 'Вакансии'
         ordering = ['id']
+
+    def get_absolute_url(self):
+        return reverse('one_vacancy', args=(self.id,))
 
 
 class Application(models.Model):
@@ -99,3 +99,7 @@ class Application(models.Model):
 
     def __str__(self):
         return f'{self.written_username}; откликнулся: {self.vacancy}'
+
+    class Meta:
+        verbose_name = 'Отклик'
+        verbose_name_plural = 'Отклики'

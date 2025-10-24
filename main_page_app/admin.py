@@ -1,15 +1,15 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from main_page_app.models import Company, Vacancy, Specialty
+from main_page_app.models import Company, Vacancy, Specialty, Application
 
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ("id", 'name', 'show_logo')
+    list_display = ("id", 'name', 'owner', 'show_logo')
 
     def show_logo(self, obj):
-        return mark_safe(f'<img src="{obj.logo.url}" alt="logo" width="50"/>')
+        return mark_safe(f'<img src="{obj.logo.url}" alt="logo" width="70"/>')
 
     show_logo.short_description = 'логотип'
 
@@ -31,7 +31,7 @@ class VacancyAdmin(admin.ModelAdmin):
         return objects.select_related('company', 'specialty')
 
     def show_logo_company(self, obj):
-        return mark_safe(f'<img src="{obj.company.logo.url}" alt="logo" width="50"/>')
+        return mark_safe(f'<img src="{obj.company.logo.url}" alt="logo" width="70"/>')
 
     show_logo_company.short_description = 'логотип компании'
 
@@ -54,3 +54,7 @@ class SpecialtyAdmin(admin.ModelAdmin):
         return mark_safe(f'<img src="{obj.picture.url}" alt="picture" width="35"/>')
 
     picture_speciality.short_description = 'картинка вакансии'
+
+@admin.register(Application)
+class ApplicationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'vacancy', 'written_username', 'written_phone')
