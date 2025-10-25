@@ -1,4 +1,4 @@
-from main_page_app import models
+from user_company import models
 from data import *
 
 flag_Company, flag_Specialty, flag_Vacancy = False, False, False

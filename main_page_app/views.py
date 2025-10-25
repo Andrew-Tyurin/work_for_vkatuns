@@ -1,9 +1,8 @@
 from django.http import HttpResponseNotFound, HttpResponseServerError
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Count
-# from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
-from .models import Specialty, Company, Vacancy
+from user_company.models import Specialty, Company, Vacancy
 
 
 class MainPageView(TemplateView):
@@ -52,31 +51,6 @@ class OneVacancyView(DetailView):
     template_name = 'main_page_app/card_one_vacancy.html'
     model = Vacancy
     pk_url_kwarg = 'vacancy_id'
-
-
-def my_company_start(request):
-    return render(request, 'main_page_app/user/mycompany_start.html', {})
-
-def my_company_create(request):
-    return render(request, 'main_page_app/user/mycompany_create.html', {})
-
-
-def my_company(request):
-    return render(request, 'main_page_app/user/mycompany.html', {})
-
-
-def my_company_vacancies_list(request):
-    return render(request, 'main_page_app/user/mycompany_vacancies_list.html', {})
-
-
-def create_vacancy_my_company(request):
-    return render(request, 'main_page_app/user/mycompany_vacancy_create.html', {})
-
-def my_company_vacancy(request, vacancy_id):
-    return render(request, 'main_page_app/user/mycompany_vacancy.html', {})
-
-
-
 
 
 def send_application(request, vacancy_id):
