@@ -6,12 +6,17 @@ from user_company.models import Company, Vacancy, Specialty, Application
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ("id", 'name', 'owner', 'show_logo')
+    list_display = ("id", 'name', 'name_owner', 'show_logo')
 
     def show_logo(self, obj):
         return mark_safe(f'<img src="{obj.logo.url}" alt="logo" width="70"/>')
 
     show_logo.short_description = 'логотип'
+
+    def name_owner(self, obj):
+        return obj.owner.last_name
+
+    name_owner.short_description = 'Владелец'
 
 
 @admin.register(Vacancy)

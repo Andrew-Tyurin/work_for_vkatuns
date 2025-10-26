@@ -12,11 +12,9 @@ class Company(models.Model):
     employee_count = models.IntegerField(default=0, verbose_name='Кол-во сотрудников')
     owner = models.OneToOneField(
         User,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         verbose_name='Владелец',
         related_name='owner',
-        null=True,
-        blank=True
     )
 
     def __str__(self):
@@ -98,7 +96,7 @@ class Application(models.Model):
     )
 
     def __str__(self):
-        return f'{self.written_username}; откликнулся: {self.vacancy}'
+        return f'{self.written_username}; откликнулся на: {self.vacancy}'
 
     class Meta:
         verbose_name = 'Отклик'

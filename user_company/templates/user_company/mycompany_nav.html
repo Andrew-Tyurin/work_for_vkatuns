@@ -1,0 +1,16 @@
+<div class="col-12 col-lg-4">
+    <aside class="pt-3 pb-4 px-4 mb-5 card">
+        <h1 class="h4 pt-2 pb-2">Моя компания</h1>
+        <div class="nav flex-column nav-pills">
+
+            {% if 'vacancies' in request.path %}
+                <p><a class="nav-link border" href="{% url 'my_company' %}">1. Информация о компании</a></p>
+                <p class="nav-link active">2. Вакансии</p>
+            {% else %}
+                <p class="nav-link active">1. Информация о компании</p>
+                <p><a class="nav-link border" href="{% url 'my_company_vacancies_list' %}">2. Вакансии</a></p>
+            {% endif %}
+
+        </div>
+    </aside>
+</div>
