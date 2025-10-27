@@ -1,7 +1,8 @@
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import UpdateView, ListView, TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import UpdateView, ListView, TemplateView, CreateView
 
 from user_company.forms import MyCompanyFrom, MyCompanyVacancyForm
 from user_company.models import Vacancy
@@ -26,8 +27,19 @@ class MyCompanyStartView(MyCompanyMixin, TemplateView):
         return context
 
 
-def my_company_create(request):
-    return render(request, 'user_company/mycompany_create.html', {})
+class CreateMyCompanyView(MyCompanyMixin, CreateView):
+    form_class = MyCompanyFrom
+    template_name = 'user_company/mycompany_create.html'
+    success_url = reverse_lazy('my_company')
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.user_has_no_company(request.user):
+            return super().dispatch(request, *args, **kwargs)
+        raise PermissionDenied("403; Ваша компания уже зарегистрирована")
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
 
 class MyCompanyView(MyCompanyMixin, UpdateView):
@@ -56,7 +68,7 @@ class MyCompanyVacanciesListView(MyCompanyMixin, ListView):
 
     def get_queryset(self):
         context = (Vacancy.objects
-                   .values('id', 'title', 'salary_min', 'salary_max',)
+                   .values('id', 'title', 'salary_min', 'salary_max', )
                    .annotate(count_interested=Count('applications'))
                    .filter(company=self.kwargs['user_company']))
         return context

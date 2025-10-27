@@ -15,6 +15,8 @@ class MyCompanyFrom(forms.ModelForm):
                 field.widget = forms.FileInput(attrs={})
             else:
                 field.widget.attrs['class'] = 'form-control'
+                if name_field == 'description':
+                    field.widget.attrs['rows'] = 4
 
 
 class MyCompanyVacancyForm(forms.ModelForm):
