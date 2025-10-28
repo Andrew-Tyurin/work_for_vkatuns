@@ -31,6 +31,7 @@ class MyCompanyVacancyForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['specialty'].empty_label = 'Выбрать...'
         for name_field, field in self.fields.items():
                 field.widget.attrs['class'] = 'form-control'
                 if name_field == 'skills':

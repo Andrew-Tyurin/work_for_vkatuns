@@ -1,6 +1,6 @@
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, ListView, TemplateView, CreateView
 
@@ -74,8 +74,20 @@ class MyCompanyVacanciesListView(MyCompanyMixin, ListView):
         return context
 
 
-def create_vacancy_my_company(request):
-    return render(request, 'user_company/mycompany_vacancy_create.html', {})
+class CreateMyCompanyVacancyView(MyCompanyMixin, CreateView):
+    form_class = MyCompanyVacancyForm
+    template_name = 'user_company/mycompany_vacancy_create.html'
+    success_url = reverse_lazy('my_company_vacancies_list')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.kwargs['user_company'] = self.user_has_companies(request.user)
+        if self.kwargs['user_company'] is None:
+            return redirect('my_company_start')
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.company = self.kwargs['user_company']
+        return super().form_valid(form)
 
 
 class MyCompanyVacancyView(MyCompanyMixin, UpdateView):

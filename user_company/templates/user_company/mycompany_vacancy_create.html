@@ -1,67 +1,21 @@
 {% extends 'main_page_app/main_layout.html' %}
-{% block custom_title %}Моя вокансия{% endblock %}
+{% block custom_title %}Создать вакансию{% endblock %}
 
 {% block custom_body %}
 
 <main class="container mt-3 pb-5">
-
-<div class="col-12 col-lg-8 mx-auto">
+    <div class="col-12 col-lg-8 mt-5 mx-auto">
     <div class="card">
         <div class="card-body px-4 pb-4 tab-content">
+        <h2 class="h4 pt-2 pb-3 text-center">Создать вакансию</h2>
 
             <section>
-                <h2 class="h4 pt-2 pb-3 text-center">Создать вакансию</h2>
-                <form action="/echo" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <div class="form-group pb-2">
-                                <label class="mb-2 text-dark" for="vacancyTitle">Название вакансии</label>
-                                <input class="form-control" type="text" value="Staffing Smarter"
-                                       id="vacancyTitle">
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <div class="form-group pb-2">
-                                <label class="mb-2 text-dark" for="userSpecialization">Специализация</label>
-                                <select class="custom-select mr-sm-2" id="userSpecialization">
-                                    <option selected>Backend разработка</option>
-                                    <option value="1">Frontend разработка</option>
-                                    <option value="2">Project manager</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <div class="form-group pb-2">
-                                <label class="mb-2 text-dark" for="vacancySalaryMin">Зарплата от</label>
-                                <input class="form-control" type="text" value="90 000" id="vacancySalaryMin">
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <div class="form-group pb-2">
-                                <label class="mb-2" for="vacancySalaryMax">Зарплата до</label>
-                                <input class="form-control" type="text" value="90 000" id="vacancySalaryMax">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group pb-2">
-                        <label class="mb-2 text-dark" for="vacancySkills">Требуемые навыки</label>
-                        <textarea class="form-control" rows="3" id="vacancySkills" style="color:#000;">....</textarea>
-                    </div>
-                    <div class="form-group pb-2">
-                        <label class="mb-2 text-dark" for="vacancyDescription">Описание вакансии</label>
-                        <textarea class="form-control" rows="13" id="vacancyDescription" style="color:#000;">...</textarea>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-info" value="Создать">
-                    </div>
-                </form>
+                {% include 'user_company/template_vacancy_create_or_update.html' %}
             </section>
 
         </div>
     </div>
-</div>
-
+    </div>
 </main>
+
 {% endblock %}
