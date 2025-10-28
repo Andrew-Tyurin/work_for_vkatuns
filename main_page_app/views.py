@@ -1,7 +1,12 @@
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseNotFound, HttpResponseServerError
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Count
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic.edit import FormMixin
+
+from main_page_app.forms import ApplicationForm
 from user_company.models import Specialty, Company, Vacancy
 
 
@@ -47,10 +52,32 @@ class VacanciesByCompaniesView(AllVacanciesView, ListView):
         return super().get_context_data(company=company, **kwargs)
 
 
-class OneVacancyView(DetailView):
+class OneVacancyView(FormMixin, DetailView):
+    form_class = ApplicationForm
     template_name = 'main_page_app/card_one_vacancy.html'
     model = Vacancy
     pk_url_kwarg = 'vacancy_id'
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_anonymous:
+            raise PermissionDenied('403 - не авторизован')
+        self.object = self.get_object()
+        form = self.get_form()
+        if request.user.applications.filter(vacancy=self.object):
+            form.add_error(None, 'Вы уже откликнулись на эту вакансию')
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.vacancy = self.object
+        form.instance.user = self.request.user
+        form.save()
+        return super().form_valid(form)
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('send_application', args=(self.kwargs['vacancy_id'],))
 
 
 def send_application(request, vacancy_id):

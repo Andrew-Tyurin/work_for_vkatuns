@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="col-12 col-lg-8">
-            <section class="px-3 border">
+            <section class="px-3">
 
                 <div>
                     <a href="#">
@@ -36,25 +36,23 @@
                     {{ object.description|safe }}
                 </div>
 
+                <hr>
+
                 <div style="line-height: 1.8;">
-                    <form action="/echo" class="card mt-4 mb-3" enctype="multipart/form-data">
+                    <form action="" class="card mt-4 mb-3" method="post">
                         <div class="card-body mx-3">
-                            <p class="h5 mt-3 font-weight-normal">Отозваться на вакансию</p>
-                            <div class="form-group">
-                                <label class="mb-1 mt-2" for="userName">Вас зовут</label>
-                                <input class="form-control" type="text" placeholder="" id="userName">
+                            <p class="h5 my-3 font-weight-normal">Отозваться на вакансию</p>
+                            <hr>
+                            {% csrf_token %}
+                            <div class="text-danger">{{ form.non_field_errors }}</div>
+                            {% for field in form %}
+                                <div class="my-2">{{ field.label }}</div>
+                                {{ field }}
+                                <div class="text-danger">{{ field.errors }}</div>
+                            {% endfor %}
+                            <div class="form-group mt-4">
+                                <button type="submit" class="btn btn-primary">Откликнуться</button>
                             </div>
-                            <div class="form-group">
-                                <label class="mb-1" for="userPhone">Ваш телефон</label>
-                                <input class="form-control" type="tel" placeholder="" id="userPhone">
-                            </div>
-                            <div class="form-group">
-                                <label class="mb-1" for="userMsg">Сопроводительное письмо</label>
-                                <textarea class="form-control" rows="8" id="userMsg"></textarea>
-                            </div>
-                            <input type="submit" class="btn btn-primary mt-4 mb-2"
-                                   value="Записаться на пробный урок">
-                            <a href="{% url 'send_application' object.id %}">Отправить отклик</a>
                         </div>
                     </form>
                 </div>

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from user_company.models import Company, Vacancy, Specialty, Application
+from user_company.models import Company, Vacancy, Specialty
 
 
 @admin.register(Company)
@@ -59,7 +59,3 @@ class SpecialtyAdmin(admin.ModelAdmin):
         return mark_safe(f'<img src="{obj.picture.url}" alt="picture" width="35"/>')
 
     picture_speciality.short_description = 'картинка вакансии'
-
-@admin.register(Application)
-class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ('user', 'vacancy', 'written_username', 'written_phone')

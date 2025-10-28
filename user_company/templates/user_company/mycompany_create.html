@@ -17,10 +17,12 @@
                             <div class="form-group pb-2">
                                 <p class="mb-2">{{ field.label }}</p>
                                 {{ field }}
+                                <div class="text-danger">{{ field.errors }}</div>
                             </div>
                         </div>
                     {% endfor %}
                     </div>
+                    <div class="text-danger">{{ form.non_field_errors }}</div>
                     <button type="submit" class="btn btn-info form-group">Создать</button>
                 </form>
 
