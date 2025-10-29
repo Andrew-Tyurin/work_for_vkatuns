@@ -15,11 +15,11 @@ class LoginUserForm(AuthenticationForm):
 class RegisterUserFrom(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'password1', 'password2',)
+        fields = ('username', 'first_name', 'last_name', 'password1', 'password2')
         labels = {
             'username': 'Логин',
             'first_name': 'Имя',
-            'last_name': 'Фамилия'
+            'last_name': 'Фамилия',
         }
 
     def __init__(self, *args, **kwargs):

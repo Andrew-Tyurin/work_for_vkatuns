@@ -13,7 +13,7 @@ class Application(models.Model):
         Vacancy,
         related_name='applications',
         verbose_name='Вакансия',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     user = models.ForeignKey(
         User,
@@ -23,7 +23,7 @@ class Application(models.Model):
     )
 
     def __str__(self):
-        return f'{self.written_username}; откликнулся на: {self.vacancy}'
+        return f'{self.user}; откликнулся на: {self.vacancy.title}; компании - {self.vacancy.company.name}'
 
     class Meta:
         verbose_name = 'Отклик'

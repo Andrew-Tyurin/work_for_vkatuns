@@ -63,7 +63,7 @@ class OneVacancyView(FormMixin, DetailView):
             raise PermissionDenied('403 - не авторизован')
         self.object = self.get_object()
         form = self.get_form()
-        if request.user.applications.filter(vacancy=self.object):
+        if request.user.applications.filter(vacancy=self.object).exists():
             form.add_error(None, 'Вы уже откликнулись на эту вакансию')
         if form.is_valid():
             return self.form_valid(form)

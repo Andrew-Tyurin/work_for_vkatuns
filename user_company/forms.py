@@ -6,7 +6,7 @@ from user_company.models import Company, Vacancy
 class MyCompanyFrom(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ('name', 'logo', 'employee_count', 'location', 'description',)
+        fields = ('name', 'logo', 'employee_count', 'location', 'description')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -22,7 +22,7 @@ class MyCompanyFrom(forms.ModelForm):
 class MyCompanyVacancyForm(forms.ModelForm):
     class Meta:
         model = Vacancy
-        fields = ('title', 'specialty', 'salary_min', 'salary_max', 'skills', 'description',)
+        fields = ('title', 'specialty', 'salary_min', 'salary_max', 'skills', 'description')
         labels = {
             'title': 'Название вакансии',
             'skills': 'Требуемые навыки',
@@ -35,4 +35,4 @@ class MyCompanyVacancyForm(forms.ModelForm):
         for name_field, field in self.fields.items():
                 field.widget.attrs['class'] = 'form-control'
                 if name_field == 'skills':
-                    field.widget.attrs['rows'] = 3 # поля класса TextField в html(<textarea>) высоту и ширину изменяет атрибуты rows/cols
+                    field.widget.attrs['rows'] = 3

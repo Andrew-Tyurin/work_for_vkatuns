@@ -25,13 +25,18 @@ class Company(models.Model):
         ordering = ['pk']
 
     def get_absolute_url(self):
-        return reverse('vacancies_by_companies', kwargs={'company_id': self.id}) # или args=(self.id,)
+        return reverse('vacancies_by_companies', kwargs={'company_id': self.id})
 
 
 class Specialty(models.Model):
     code = models.CharField(max_length=30, unique=True, verbose_name='Код')
     title = models.CharField(max_length=30, verbose_name='Направление')
-    picture = models.ImageField(upload_to='specialties', default='https://place-hold.it/100x60', blank=True, verbose_name='Картинка')
+    picture = models.ImageField(
+        upload_to='specialties',
+        default='https://place-hold.it/100x60',
+        blank=True,
+        verbose_name='Картинка'
+    )
 
     def __str__(self):
         return self.title
@@ -51,7 +56,7 @@ class Vacancy(models.Model):
         on_delete=models.CASCADE,
         to_field="code",
         related_name="vacancies",
-        verbose_name='Специализация'
+        verbose_name='Специализация',
     )
     company = models.ForeignKey(
         'Company',

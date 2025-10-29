@@ -15,7 +15,7 @@ class ApplicationForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             if field_name == 'written_phone':
                 field.widget.attrs['class'] = 'form-control w-25'
-                field.widget.attrs['placeholder'] = '8 900 *** ** **'
+                field.widget.attrs['placeholder'] = '8 *** *** ** **'
             else:
                 field.widget.attrs['class'] = 'form-control'
 

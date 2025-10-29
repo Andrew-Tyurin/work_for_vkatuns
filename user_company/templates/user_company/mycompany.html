@@ -13,7 +13,14 @@
                 <div class="card-body px-4 pb-4">
                     <section class="tab-pane fade show active">
                         <h2 class="h4 pt-2 pb-3">Информация о компании</h2>
-                        <p class="alert alert-info" role="alert">Информация о компании обновлена</p>
+
+                        {% if messages %}
+                            {% for mes in messages %}
+                                {% if mes %}
+                                {% endif %}
+                            {% endfor %}
+                            <p class="alert alert-info" role="alert">Информация о компании обновлена</p>
+                        {% endif %}
 
                         <form class="" action='' enctype="multipart/form-data" method="post">
                             <div class="row">

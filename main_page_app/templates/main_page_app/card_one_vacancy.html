@@ -37,7 +37,7 @@
                 </div>
 
                 <hr>
-
+                {% if request.user.is_authenticated %}
                 <div style="line-height: 1.8;">
                     <form action="" class="card mt-4 mb-3" method="post">
                         <div class="card-body mx-3">
@@ -56,6 +56,12 @@
                         </div>
                     </form>
                 </div>
+                {% else %}
+                    <div class="border p-2 text-center">
+                        <div>Авторизуйтесь если хотите откликнуться на эту вакансию</div>
+                        <a href="{% url 'login' %}">Авторизация</a>
+                    </div>
+                {% endif %}
 
             </section>
         </div>
