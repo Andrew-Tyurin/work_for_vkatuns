@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.db.models import Count
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, ListView, TemplateView, CreateView
 
@@ -47,12 +47,6 @@ class MyCompanyView(MyCompanyMixin, UpdateView):
 class MyCompanyVacanciesListView(MyCompanyMixin, ListView):
     model = Vacancy
     template_name = 'user_company/mycompany_vacancies_list.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        self.kwargs['user_company'] = self.user_has_companies(request.user)
-        if self.kwargs['user_company'] is None:
-            return redirect('my_company_start')
-        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         context = (
