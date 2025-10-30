@@ -9,7 +9,8 @@ if flag_Company:
             name=item['title'],
             location=item['location'],
             employee_count=item['employee_count'],
-            description=item['description']
+            description=item['description'],
+            owner_id=item['owner_id'],
         )
         print(obj)
 
@@ -26,7 +27,7 @@ if flag_Vacancy:
         obj = models.Vacancy.objects.create(
             title=item['title'],
             specialty_id=item['specialty'],
-            company_id=int(item['company']),
+            company_id=item['company_id'],
             skills=item['skills'],
             description=item['description'],
             salary_min=int(item['salary_from']),
