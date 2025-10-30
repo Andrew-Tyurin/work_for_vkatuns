@@ -110,3 +110,69 @@ class Application(models.Model):
     class Meta:
         verbose_name = 'Отклик'
         verbose_name_plural = 'Отклики'
+
+
+class Resume(models.Model):
+    class Status(models.TextChoices):
+        MAX_ACTIVE = 'max_active', 'Ищу работу'
+        ACTIVE = 'active', 'Рассматриваю предложения'
+        NON_ACTIVE = 'non_active', 'Не ищу работу'
+
+    class Grade(models.TextChoices):
+        INTERN = 'intern', 'Стажер'
+        JUNIOR = 'Junior', 'Джуниор'
+        MIDDLE = 'middle', 'Миддл'
+        SENIOR = 'senior', 'Синьор'
+        LID = 'lid', 'Лид'
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='my_resume',
+        verbose_name='Резюме',
+    )
+    name = models.CharField(max_length=80, verbose_name='Имя')
+    surname = models.CharField(max_length=80, verbose_name='Фамилия')
+    status = models.CharField(
+        max_length=26,
+        choices = Status.choices,
+        default=Status.MAX_ACTIVE,
+        verbose_name='Готовность к работе',
+    )
+    salary = models.IntegerField(default=1, verbose_name='Вознаграждение')
+    specialty = models.ForeignKey(
+        Specialty,
+        on_delete=models.CASCADE,
+        to_field="code",
+        related_name="resume",
+        verbose_name='Специализация',
+    )
+    grade = models.CharField(
+        max_length=20,
+        choices=Grade.choices,
+        default=Grade.MIDDLE,
+        verbose_name='Квалификация',
+    )
+    education = models.TextField(
+        blank=True,
+        default='4 класса начальной школы.',
+        verbose_name='Образование',
+    )
+    experience = models.TextField(
+        blank=True,
+        default='Яндекс...  доставка',
+        verbose_name='Опыт работы',
+    )
+    portfolio = models.URLField(
+        blank=True,
+        max_length=120,
+        verbose_name = 'Портфолио',
+    )
+
+
+    def __str__(self):
+        return f'{self.user}, {self.grade}, {self.status}'
+
+    class Meta:
+        verbose_name = 'Резюме'
+        verbose_name_plural = verbose_name

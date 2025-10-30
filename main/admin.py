@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from main.models import Application, Company, Vacancy, Specialty
+from main.models import Application, Company, Vacancy, Specialty, Resume
 
 
 @admin.register(Company)
@@ -64,3 +64,8 @@ class SpecialtyAdmin(admin.ModelAdmin):
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = ('user', 'vacancy', 'written_username', 'written_phone')
+
+
+@admin.register(Resume)
+class ResumeAdmin(admin.ModelAdmin):
+    list_display = ('user', 'surname', 'grade', 'salary', 'specialty')

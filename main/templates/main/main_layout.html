@@ -36,7 +36,7 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right mt-3">
                             <a href="#" class="dropdown-item py-2">Профиль</a>
-                            <a href="#" class="dropdown-item py-2">Резюме</a>
+                            <a href="{% url 'my_resume' %}" class="dropdown-item py-2">Резюме</a>
                             <a href="{% url 'my_company' %}" class="dropdown-item py-2">Компания</a>
                             <form action="{% url 'logout' %}" method="post">
                                 {% csrf_token %}

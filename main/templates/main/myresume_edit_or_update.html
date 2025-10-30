@@ -1,0 +1,39 @@
+{% extends 'main/main_layout.html' %}
+
+{% block custom_title %}{{ title }}{% endblock %}
+
+{% block custom_body %}
+
+<main class="container mt-3 pb-5">
+    <section class="col-12 col-lg-6 offset-lg-3 mt-5 card">
+        <div class="card-body px-3 pb-4">
+            <h1 class="h4 pt-2 pb-3">{{ title_form }}</h1>
+            {% if 'create' not in request.path %}
+                <p class="alert alert-info" role="alert">Ваше резюме обновлено!</p>
+            {% endif %}
+
+            <form action="" class="" method="post">
+                <div class="row">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    {% for field in form %}
+                        <div class="col-12 {% if field.name not in "education,experience" %}col-md-6{% endif %}">
+                            <div class="form-group pb-2">
+                                <div class="mb-2 text-dark">{{ field.label }}</div>
+                                {{ field }}
+                                <div class="text-danger">{{ field.errors }}</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-info">{{ button }}</button>
+                </div>
+            </form>
+
+        </div>
+    </section>
+</main>
+
+{% endblock %}

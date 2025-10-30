@@ -22,6 +22,7 @@ class LoginUserView(LoginView):
         context.update(
             button='Войти',
             title_form='Войти, чтобы управлять',
+            title='Авторизация',
         )
         return context
 
@@ -38,6 +39,7 @@ class RegisterUserView(CreateView):
         context.update(
             button='Зарегистрироваться',
             title_form='Создать аккаунт',
+            title='Регистрация',
         )
         return context
 

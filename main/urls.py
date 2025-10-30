@@ -21,4 +21,8 @@ urlpatterns = [
     path('register/', accounts_views.RegisterUserView.as_view(), name='register'),
     path('logout/', accounts_views.LogoutUserView.as_view(), name='logout'),
 
+    path('myresume/', views.MyResumeView.as_view(), name='my_resume'),
+    path('myresume/letsstart/', views.MyResumeStartView.as_view(), name='my_resume_start'),
+    path('myresume/create/', views.CreateMyResumeView.as_view(), name='my_resume_create'),
+
 ]

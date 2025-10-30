@@ -7,9 +7,9 @@ from django.views.generic import TemplateView, ListView, DetailView, UpdateView,
 from django.views.generic.edit import FormMixin
 from django.contrib import messages
 
-from main.forms import ApplicationForm, MyCompanyFrom, MyCompanyVacancyForm
+from main.forms import ApplicationForm, MyCompanyFrom, MyCompanyVacancyForm, MyResumeForm
 from main.models import Specialty, Company, Vacancy
-from main.utils import MyCompanyMixin
+from main.utils import MyCompanyMixin, MyResumeMixin
 
 
 class MainPageView(TemplateView):
@@ -164,6 +164,47 @@ class MyCompanyVacancyView(MyCompanyMixin, UpdateView):
     def get_success_url(self):
         messages.success(self.request, True)
         return reverse_lazy('my_company_vacancy', args=(self.kwargs['vacancy_id'],))
+
+
+class MyResumeView(MyResumeMixin, UpdateView):
+    form_class = MyResumeForm
+    template_name = 'main/myresume_edit_or_update.html'
+    success_url = reverse_lazy('my_resume')
+
+    def get_object(self, queryset=None):
+        return self.kwargs['user_resume']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(
+            button='Сохранить',
+            title_form='Изменить резюме',
+            title='Моё резюме',
+        )
+        return context
+
+
+class MyResumeStartView(MyResumeMixin, TemplateView):
+    template_name = 'main/myresume_start.html'
+
+
+class CreateMyResumeView(MyResumeMixin, CreateView):
+    form_class = MyResumeForm
+    template_name = 'main/myresume_edit_or_update.html'
+    success_url = reverse_lazy('my_resume')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(
+            button='Создать',
+            title_form='Создать резюме',
+            title='Создание резюме',
+        )
+        return context
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 def custom_handler404(request, exception):

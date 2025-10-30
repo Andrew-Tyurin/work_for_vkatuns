@@ -1,10 +1,11 @@
-django-phonenumber-field
 asgiref==3.9.1
 astpretty==3.0.0
 astroid==2.15.8
 attrs==25.3.0
 cognitive_complexity==1.3.0
 Django==5.2.6
+django-debug-toolbar==6.0.0
+django-phonenumber-field==8.3.0
 eradicate==2.3.0
 flake8==6.1.0
 flake8-blind-except==0.2.1
@@ -21,6 +22,8 @@ flake8_cognitive_complexity==0.1.0
 lazy-object-proxy==1.12.0
 mccabe==0.7.0
 pep8-naming==0.15.1
+phonenumbers==9.0.16
+pillow==12.0.0
 pycodestyle==2.11.1
 pyflakes==3.1.0
 setuptools==80.9.0

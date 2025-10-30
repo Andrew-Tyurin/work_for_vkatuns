@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from main.models import Application, Company, Vacancy
+from main.models import Application, Company, Vacancy, Resume
 
 
 class MyCompanyFrom(forms.ModelForm):
@@ -49,8 +49,7 @@ class ApplicationForm(forms.ModelForm):
         self.fields['written_username'].label = 'Вас зовут'
         for field_name, field in self.fields.items():
             if field_name == 'written_phone':
-                field.widget.attrs['class'] = 'form-control w-25'
-                field.widget.attrs['placeholder'] = '8 *** *** ** **'
+                field.widget.attrs = {'class': 'form-control w-25', 'placeholder': '8 *** *** ** **'}
             else:
                 field.widget.attrs['class'] = 'form-control'
 
@@ -59,3 +58,45 @@ class ApplicationForm(forms.ModelForm):
         if len(written_cover_letter.strip()) < 15:
             raise ValidationError('Напишите подробней о себе')
         return written_cover_letter
+
+class MyResumeForm(forms.ModelForm):
+    class Meta:
+        model = Resume
+        fields = (
+            'name', 'surname', 'status',
+            'salary', 'specialty', 'grade',
+            'education', 'experience', 'portfolio'
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['specialty'].empty_label = 'Выбрать...'
+        for field_name, field in self.fields.items():
+            if field_name in ('education', 'experience'):
+                field.widget.attrs = {'class': 'form-control', 'rows': 4}
+            else:
+                field.widget.attrs['class'] = 'form-control'
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if name.isalpha() and len(name) > 2:
+            return name
+        raise ValidationError('Имя должно из состоять минимум из двух букв')
+
+    def clean_surname(self):
+        surname = self.cleaned_data['surname']
+        if surname.isalpha() and len(surname) > 2:
+            return surname
+        raise ValidationError('Фамилия должна состоять минимум из двух букв')
+
+    def clean_salary(self):
+        salary = self.cleaned_data['salary']
+        if int(salary) < 0:
+            raise ValidationError('Вам должны платить, а не вы!')
+        return salary
+
+    def clean_portfolio(self):
+        portfolio = self.cleaned_data['portfolio']
+        if 'github.com' in portfolio or portfolio in '':
+            return portfolio
+        raise ValidationError('Неизвестный источник')
