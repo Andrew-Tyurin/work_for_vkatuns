@@ -1,0 +1,21 @@
+{% extends 'main/main_layout.html' %}
+{% block custom_title %}Создать вакансию{% endblock %}
+
+{% block custom_body %}
+
+<main class="container mt-3 pb-5">
+    <div class="col-12 col-lg-8 mt-5 mx-auto">
+    <div class="card">
+        <div class="card-body px-4 pb-4 tab-content">
+        <h2 class="h4 pt-2 pb-3 text-center">Создать вакансию</h2>
+
+            <section>
+                {% include 'main/template_vacancy_create_or_update.html' %}
+            </section>
+
+        </div>
+    </div>
+    </div>
+</main>
+
+{% endblock %}
