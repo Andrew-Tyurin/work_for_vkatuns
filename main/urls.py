@@ -9,6 +9,7 @@ urlpatterns = [
     path('vacancies/company/<int:company_id>/', views.VacanciesByCompaniesView.as_view(), name='vacancies_by_companies'),
     path('vacancies/<int:vacancy_id>/', views.OneVacancyView.as_view(), name='one_vacancy'),
     path('vacancies/<int:vacancy_id>/send/', views.send_application, name='send_application'),
+    path('search/', views.SearchVacanciesView.as_view(), name='search_vacancy'),
 
     path('mycompany/', views.MyCompanyView.as_view(), name='my_company'),
     path('mycompany/letsstart/', views.MyCompanyStartView.as_view(), name='my_company_start'),

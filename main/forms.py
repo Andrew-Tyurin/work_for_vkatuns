@@ -100,3 +100,17 @@ class MyResumeForm(forms.ModelForm):
         if 'github.com' in portfolio or portfolio in '':
             return portfolio
         raise ValidationError('Неизвестный источник')
+
+
+class SearchForm(forms.Form):
+    s = forms.CharField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['s'].widget.attrs = {
+            'class': 'form-control w-100',
+            'aria-label': 'search',
+            'placeholder':'Найти работу или стажировку',
+            'maxlength': '35',
+            'type':'search',
+        }

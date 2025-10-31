@@ -11,11 +11,22 @@
                     {% if specialty_ru %}
                         <span>специализация - {{ specialty_ru }}</span>
                     {% elif company %}
-                        <div class="border m-auto h5 p-2 col-3">
-                            <img src="{{ company.logo.url }}" width="100" height="60" alt="">
-                            <p class="mt-auto">Компания - {{ company.name }}</p>
+                        <div class="m-auto h5 p-2 col-3">
+                            <div class="border">
+                                <img src="{{ company.logo.url }}" width="100" height="60" alt="logo">
+                                <p class="mt-auto">Компания - {{ company.name }}</p>
+                            </div>
+                            <div class="my-2"><span>Офис находится - {{ company.location }};</span></div>
                         </div>
-                        {{ company.title }}
+                    {% elif search %}
+                        <h3 class="col-12 col-md-8 col-lg-6 offset-lg-3 offset-md-2">
+                        <p>Поиск вакансий</p>
+
+                            {% include 'main/search.html' %}
+
+                            {{ empty_object_list }}
+                            {{ non_object_list }}
+                        </h3>
                     {% else %}
                         Все вакансии
                     {% endif %}
@@ -23,9 +34,6 @@
             </h1>
 
             <p class="text-center pt-1">
-                {% if company %}
-                    <span>Офис находится - {{ company.location }};</span>
-                {% endif %}
                 <span>кол-во вакансий: {{ object_list|length }}</span>
             </p>
 

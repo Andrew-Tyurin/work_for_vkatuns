@@ -1,13 +1,13 @@
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseNotFound, HttpResponseServerError
 from django.shortcuts import get_object_or_404, render
-from django.db.models import Count
+from django.db.models import Count, QuerySet, Q
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, UpdateView, CreateView
 from django.views.generic.edit import FormMixin
 from django.contrib import messages
 
-from main.forms import ApplicationForm, MyCompanyFrom, MyCompanyVacancyForm, MyResumeForm
+from main.forms import ApplicationForm, MyCompanyFrom, MyCompanyVacancyForm, MyResumeForm, SearchForm
 from main.models import Specialty, Company, Vacancy
 from main.utils import MyCompanyMixin, MyResumeMixin
 
@@ -19,6 +19,7 @@ class MainPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['specialty_list'] = Specialty.objects.annotate(count=Count('vacancies'))
         context['company_list'] = Company.objects.annotate(count=Count('vacancies'))
+        context['form'] = SearchForm()
         return context
 
 
@@ -52,6 +53,31 @@ class VacanciesByCompaniesView(AllVacanciesView, ListView):
     def get_context_data(self, **kwargs):
         company = get_object_or_404(Company, id=self.kwargs['company_id'])
         return super().get_context_data(company=company, **kwargs)
+
+
+class SearchVacanciesView(ListView):
+    template_name = 'main/vacancies.html'
+    model = Vacancy
+
+    def get_queryset(self, **kwargs):
+        s = self.request.GET.get('s')
+        if isinstance(s, str):
+            s = s.strip()
+        if s is None or s == '':
+            queryset = None
+        else:
+            queryset = self.model.objects.filter(Q(title__icontains=s) | Q(skills__icontains=s))
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if not self.object_list and isinstance(self.object_list, QuerySet):
+            context['empty_object_list'] = 'Ничего не найдено'
+        elif self.object_list is None:
+            context['non_object_list'] = 'Начать поиск!!!'
+        context['search'] = True
+        context['form'] = SearchForm()
+        return context
 
 
 class OneVacancyView(FormMixin, DetailView):
