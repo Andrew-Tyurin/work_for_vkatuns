@@ -209,6 +209,10 @@ class MyResumeView(MyResumeMixin, UpdateView):
         )
         return context
 
+    def get_success_url(self):
+        messages.success(self.request, True)
+        return self.success_url
+
 
 class MyResumeStartView(MyResumeMixin, TemplateView):
     template_name = 'main/myresume/myresume_start.html'
