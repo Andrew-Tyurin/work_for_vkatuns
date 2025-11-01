@@ -11,13 +11,10 @@ class MyCompanyFrom(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['description'].widget.attrs['rows'] = 4
+        self.fields['logo'].widget = forms.FileInput(attrs={})
         for name_field, field in self.fields.items():
-            if name_field == 'logo':
-                field.widget = forms.FileInput(attrs={})
-            else:
-                field.widget.attrs['class'] = 'form-control'
-                if name_field == 'description':
-                    field.widget.attrs['rows'] = 4
+            field.widget.attrs['class'] = 'form-control'
 
 
 class MyCompanyVacancyForm(forms.ModelForm):
@@ -33,10 +30,9 @@ class MyCompanyVacancyForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['specialty'].empty_label = 'Выбрать...'
+        self.fields['skills'].widget.attrs['rows'] = 3
         for name_field, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-            if name_field == 'skills':
-                field.widget.attrs['rows'] = 3
 
 
 class ApplicationForm(forms.ModelForm):
@@ -59,13 +55,14 @@ class ApplicationForm(forms.ModelForm):
             raise ValidationError('Напишите подробней о себе')
         return written_cover_letter
 
+
 class MyResumeForm(forms.ModelForm):
     class Meta:
         model = Resume
         fields = (
             'name', 'surname', 'status',
             'salary', 'specialty', 'grade',
-            'education', 'experience', 'portfolio'
+            'education', 'experience', 'portfolio',
         )
 
     def __init__(self, *args, **kwargs):
@@ -110,7 +107,7 @@ class SearchForm(forms.Form):
         self.fields['s'].widget.attrs = {
             'class': 'form-control w-100',
             'aria-label': 'search',
-            'placeholder':'Найти работу или стажировку',
+            'placeholder': 'Найти работу или стажировку',
             'maxlength': '35',
-            'type':'search',
+            'type': 'search',
         }

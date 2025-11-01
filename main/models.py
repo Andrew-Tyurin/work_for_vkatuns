@@ -135,7 +135,7 @@ class Resume(models.Model):
     surname = models.CharField(max_length=80, verbose_name='Фамилия')
     status = models.CharField(
         max_length=26,
-        choices = Status.choices,
+        choices=Status.choices,
         default=Status.MAX_ACTIVE,
         verbose_name='Готовность к работе',
     )
@@ -166,9 +166,8 @@ class Resume(models.Model):
     portfolio = models.URLField(
         blank=True,
         max_length=120,
-        verbose_name = 'Портфолио',
+        verbose_name='Портфолио',
     )
-
 
     def __str__(self):
         return f'{self.user}, {self.grade}, {self.status}'

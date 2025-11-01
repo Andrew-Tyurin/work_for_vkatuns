@@ -13,7 +13,7 @@ from main.utils import MyCompanyMixin, MyResumeMixin
 
 
 class MainPageView(TemplateView):
-    template_name = 'main/index.html'
+    template_name = 'main/main/index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -25,7 +25,7 @@ class MainPageView(TemplateView):
 
 class AllVacanciesView(ListView):
     model = Vacancy
-    template_name = 'main/vacancies.html'
+    template_name = 'main/main/vacancies.html'
 
     def get_queryset(self):
         return super().get_queryset().select_related('company')
@@ -56,17 +56,17 @@ class VacanciesByCompaniesView(AllVacanciesView, ListView):
 
 
 class SearchVacanciesView(ListView):
-    template_name = 'main/vacancies.html'
+    template_name = 'main/main/vacancies.html'
     model = Vacancy
 
     def get_queryset(self, **kwargs):
-        s = self.request.GET.get('s')
-        if isinstance(s, str):
-            s = s.strip()
-        if s is None or s == '':
+        query_key = self.request.GET.get('s')
+        if isinstance(query_key, str):
+            query_key = query_key.strip()
+        if query_key is None or query_key == '':
             queryset = None
         else:
-            queryset = self.model.objects.filter(Q(title__icontains=s) | Q(skills__icontains=s))
+            queryset = self.model.objects.filter(Q(title__icontains=query_key) | Q(skills__icontains=query_key))
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -82,7 +82,7 @@ class SearchVacanciesView(ListView):
 
 class OneVacancyView(FormMixin, DetailView):
     form_class = ApplicationForm
-    template_name = 'main/card_one_vacancy.html'
+    template_name = 'main/main/card_one_vacancy.html'
     model = Vacancy
     pk_url_kwarg = 'vacancy_id'
 
@@ -109,11 +109,11 @@ class OneVacancyView(FormMixin, DetailView):
 
 
 def send_application(request, vacancy_id):
-    return render(request, 'main/sent.html', {})
+    return render(request, 'main/main/sent.html', {})
 
 
 class MyCompanyStartView(MyCompanyMixin, TemplateView):
-    template_name = 'main/mycompany_start.html'
+    template_name = 'main/mycompany/mycompany_start.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -127,7 +127,7 @@ class MyCompanyStartView(MyCompanyMixin, TemplateView):
 
 class CreateMyCompanyView(MyCompanyMixin, CreateView):
     form_class = MyCompanyFrom
-    template_name = 'main/mycompany_create.html'
+    template_name = 'main/mycompany/mycompany_create.html'
     success_url = reverse_lazy('my_company')
 
     def form_valid(self, form):
@@ -137,7 +137,7 @@ class CreateMyCompanyView(MyCompanyMixin, CreateView):
 
 class MyCompanyView(MyCompanyMixin, UpdateView):
     form_class = MyCompanyFrom
-    template_name = 'main/mycompany.html'
+    template_name = 'main/mycompany/mycompany.html'
 
     def get_object(self, queryset=None):
         return self.kwargs['user_company']
@@ -149,11 +149,11 @@ class MyCompanyView(MyCompanyMixin, UpdateView):
 
 class MyCompanyVacanciesListView(MyCompanyMixin, ListView):
     model = Vacancy
-    template_name = 'main/mycompany_vacancies_list.html'
+    template_name = 'main/mycompany/mycompany_vacancies_list.html'
 
     def get_queryset(self):
         context = (
-            self.kwargs['user_company'].vacancies.all()
+            self.kwargs['user_company'].vacancies
             .values('id', 'title', 'salary_min', 'salary_max')
             .annotate(count_interested=Count('applications'))
         )
@@ -162,7 +162,7 @@ class MyCompanyVacanciesListView(MyCompanyMixin, ListView):
 
 class CreateMyCompanyVacancyView(MyCompanyMixin, CreateView):
     form_class = MyCompanyVacancyForm
-    template_name = 'main/mycompany_vacancy_create.html'
+    template_name = 'main/mycompany/mycompany_vacancy_create.html'
     success_url = reverse_lazy('my_company_vacancies_list')
 
     def form_valid(self, form):
@@ -172,7 +172,7 @@ class CreateMyCompanyVacancyView(MyCompanyMixin, CreateView):
 
 class MyCompanyVacancyView(MyCompanyMixin, UpdateView):
     form_class = MyCompanyVacancyForm
-    template_name = 'main/mycompany_vacancy.html'
+    template_name = 'main/mycompany/mycompany_vacancy.html'
 
     def get_object(self, queryset=None):
         company_vacancies = self.kwargs['user_company'].vacancies.all()
@@ -194,7 +194,7 @@ class MyCompanyVacancyView(MyCompanyMixin, UpdateView):
 
 class MyResumeView(MyResumeMixin, UpdateView):
     form_class = MyResumeForm
-    template_name = 'main/myresume_edit_or_update.html'
+    template_name = 'main/myresume/myresume_edit_or_update.html'
     success_url = reverse_lazy('my_resume')
 
     def get_object(self, queryset=None):
@@ -211,12 +211,12 @@ class MyResumeView(MyResumeMixin, UpdateView):
 
 
 class MyResumeStartView(MyResumeMixin, TemplateView):
-    template_name = 'main/myresume_start.html'
+    template_name = 'main/myresume/myresume_start.html'
 
 
 class CreateMyResumeView(MyResumeMixin, CreateView):
     form_class = MyResumeForm
-    template_name = 'main/myresume_edit_or_update.html'
+    template_name = 'main/myresume/myresume_edit_or_update.html'
     success_url = reverse_lazy('my_resume')
 
     def get_context_data(self, **kwargs):

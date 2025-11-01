@@ -10,7 +10,7 @@ from main.accounts.forms import RegisterUserFrom, LoginUserForm
 
 class LoginUserView(LoginView):
     form_class = LoginUserForm
-    template_name = 'main/register_login.html'
+    template_name = 'main/accounts/register_login.html'
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -31,7 +31,7 @@ class LoginUserView(LoginView):
 
 
 class RegisterUserView(CreateView):
-    template_name = 'main/register_login.html'
+    template_name = 'main/accounts/register_login.html'
     form_class = RegisterUserFrom
 
     def get_context_data(self, **kwargs):
