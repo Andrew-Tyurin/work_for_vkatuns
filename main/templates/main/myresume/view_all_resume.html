@@ -1,0 +1,48 @@
+{% extends 'main/main_layout.html' %}
+{% load humanize %}
+
+{% block custom_title %}Резюме всех пользователей{% endblock %}
+
+{% block custom_body %}
+    <main class="container mt-3">
+        <section>
+
+            <h2 class="h2 text-center mx-auto mt-4 pt-5">
+                <strong>Карточки кандидатов:</strong>
+            </h2>
+
+            <div class="d-flex mx-auto row">
+                {% for object in object_list %}
+                    <div class="my-4 col-lg-4 col-md-6 col-sm-12">
+                        <div class="p-2 border shadow h-100">
+                            <div class="p-2 border mb-2">
+                                <p class=""><b>Статус:</b> {{ object.get_status_display }}</p>
+                                <p class=""><b>Направление:</b> {{ object.specialty }}</p>
+                                <p class=""><b>Уровень:</b> {{ object.get_grade_display }}</p>
+                                <p class=""><b>Имя:</b> {{ object.name }}</p>
+                                <p class=""><b>Фамилия:</b> {{ object.surname }}</p>
+                                <p class=""><b>Денег хочу:</b> {{ object.salary | intcomma }} Руб.</p>
+                            </div>
+                            <div>
+                                <div class="p-2 border mb-2">
+                                    <span><b>Мои проекты:</b></span>
+                                    <p><a href="{{ object.portfolio }}" target="_blank">{{ object.portfolio }}</a></p>
+                                </div>
+                                <div class="p-2 border mb-2">
+                                    <span><b>Образование:</b></span>
+                                    <p>{{ object.education }}</p>
+                                </div>
+                                <div class="p-2 border">
+                                    <span><b>Опыт работы:</b></span>
+                                    <p>{{ object.experience }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </section>
+    </main>
+
+{% endblock %}

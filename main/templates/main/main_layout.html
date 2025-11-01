@@ -21,9 +21,13 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
             <ul class="navbar-nav col-10">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'vacancies_page' %}">Вакансии</a>
+                    {% url 'vacancies_page' as vacancies %}
+                    <a class="nav-link{% if request.path == vacancies %} text-success{% endif %}" href="{% url 'vacancies_page' %}">Вакансии</a>
                 </li>
-
+                <li class="nav-item">
+                    {% url 'all_resume' as resume %}
+                    <a class="nav-link{% if request.path == resume %} text-success{% endif %}" href="{% url 'all_resume' %}">Кандидаты</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav col-2 justify-content-end">

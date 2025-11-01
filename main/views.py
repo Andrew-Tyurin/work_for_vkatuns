@@ -1,5 +1,5 @@
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseNotFound, HttpResponseServerError
+from django.http import HttpResponseNotFound, HttpResponseServerError, HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Count, QuerySet, Q
 from django.urls import reverse_lazy
@@ -8,7 +8,7 @@ from django.views.generic.edit import FormMixin
 from django.contrib import messages
 
 from main.forms import ApplicationForm, MyCompanyFrom, MyCompanyVacancyForm, MyResumeForm, SearchForm
-from main.models import Specialty, Company, Vacancy
+from main.models import Specialty, Company, Vacancy, Resume
 from main.utils import MyCompanyMixin, MyResumeMixin
 
 
@@ -108,8 +108,8 @@ class OneVacancyView(FormMixin, DetailView):
         return reverse_lazy('send_application', args=(self.kwargs['vacancy_id'],))
 
 
-def send_application(request, vacancy_id):
-    return render(request, 'main/main/sent.html', {})
+def send_application(request: HttpRequest, vacancy_id) -> HttpResponse:
+    return render(request, 'main/main/send.html', {})
 
 
 class MyCompanyStartView(MyCompanyMixin, TemplateView):
@@ -235,6 +235,14 @@ class CreateMyResumeView(MyResumeMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class AllResumeView(ListView):
+    model = Resume
+    template_name = 'main/myresume/view_all_resume.html'
+
+    def get_queryset(self):
+        return super().get_queryset().select_related('specialty')
 
 
 def custom_handler404(request, exception):

@@ -25,5 +25,6 @@ urlpatterns = [
     path('myresume/', views.MyResumeView.as_view(), name='my_resume'),
     path('myresume/letsstart/', views.MyResumeStartView.as_view(), name='my_resume_start'),
     path('myresume/create/', views.CreateMyResumeView.as_view(), name='my_resume_create'),
+    path('resume/', views.AllResumeView.as_view(), name='all_resume'),
 
 ]

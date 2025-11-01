@@ -9,7 +9,7 @@ from main.models import Company, Resume
 class MyCompanyMixin(View):
     """
     Данный класс помогает работать с доступами пользователй к
-    разным url связанные с созданием или работой уже текущей компании.
+    разным url связанные с созданием или работой уже с текущей компании.
     """
     custom_raise_exception = True
     CREATE_MY_COMPANY = ('my_company_start', 'my_company_create')
