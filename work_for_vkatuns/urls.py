@@ -2,7 +2,7 @@ from django.conf.urls.static import static
 from django.urls import include, path
 from django.contrib import admin
 
-from main.views import custom_handler404, custom_handler500
+from main.views.views import custom_handler404, custom_handler500
 from work_for_vkatuns import settings
 
 handler500 = custom_handler500
