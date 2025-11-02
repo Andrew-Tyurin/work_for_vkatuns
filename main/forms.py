@@ -14,7 +14,8 @@ class MyCompanyFrom(forms.ModelForm):
         self.fields['description'].widget.attrs['rows'] = 4
         self.fields['logo'].widget = forms.FileInput(attrs={})
         for name_field, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            if name_field != 'logo':
+                field.widget.attrs['class'] = 'form-control'
 
 
 class MyCompanyVacancyForm(forms.ModelForm):

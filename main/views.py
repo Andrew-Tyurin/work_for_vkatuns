@@ -140,7 +140,7 @@ class MyCompanyView(MyCompanyMixin, UpdateView):
     template_name = 'main/mycompany/mycompany.html'
 
     def get_object(self, queryset=None):
-        return self.kwargs['user_company']
+        return self.kwargs['one_to_one_object']
 
     def get_success_url(self):
         messages.success(self.request, True)
@@ -153,7 +153,7 @@ class MyCompanyVacanciesListView(MyCompanyMixin, ListView):
 
     def get_queryset(self):
         context = (
-            self.kwargs['user_company'].vacancies
+            self.kwargs['one_to_one_object'].vacancies
             .values('id', 'title', 'salary_min', 'salary_max')
             .annotate(count_interested=Count('applications'))
         )
@@ -166,7 +166,7 @@ class CreateMyCompanyVacancyView(MyCompanyMixin, CreateView):
     success_url = reverse_lazy('my_company_vacancies_list')
 
     def form_valid(self, form):
-        form.instance.company = self.kwargs['user_company']
+        form.instance.company = self.kwargs['one_to_one_object']
         return super().form_valid(form)
 
 
@@ -175,7 +175,7 @@ class MyCompanyVacancyView(MyCompanyMixin, UpdateView):
     template_name = 'main/mycompany/mycompany_vacancy.html'
 
     def get_object(self, queryset=None):
-        company_vacancies = self.kwargs['user_company'].vacancies.all()
+        company_vacancies = self.kwargs['one_to_one_object'].vacancies.all()
         return get_object_or_404(company_vacancies, id=self.kwargs['vacancy_id'])
 
     def get_context_data(self, **kwargs):
@@ -198,7 +198,7 @@ class MyResumeView(MyResumeMixin, UpdateView):
     success_url = reverse_lazy('my_resume')
 
     def get_object(self, queryset=None):
-        return self.kwargs['user_resume']
+        return self.kwargs['one_to_one_object']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
