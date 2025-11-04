@@ -1,9 +1,24 @@
+"""
+Тут реализован скрипт, который быстро может заполнить таблицы/orm-модели шаблонными объектами.
+В случа если бд нужно будет отформатировать. Скрипт жёстко привязан к id и использовать
+его можно если модели пусты: Company, Specialty, Vacancy, Application, Resume, User.
+И id в пустых таблицах должен у всех начинаться 1, только тогда скрипт добавить объекты.
+В качестве данных используем data.py
+"""
+import os
+import django
+
+# Указываем Django, где искать настройки
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'work_for_vkatuns.settings')
+
+# Инициализируем Django
+django.setup()
+
 from django.contrib.auth.models import User
 from django.core.files import File
 
 from main.models import Company, Specialty, Vacancy, Application, Resume
 from data import users, companies, specialties, jobs, applications, resume_all
-
 
 allow_recording = False
 
@@ -52,7 +67,7 @@ def write_data():
             print(company)
 
     for item in specialties:
-        with open('./main/images/specialties/' +  item['picture'], 'rb') as f:
+        with open('./main/images/specialties/' + item['picture'], 'rb') as f:
             specialty = Specialty(
                 code=item['code'],
                 title=item['title'],
@@ -64,7 +79,7 @@ def write_data():
     for item in jobs:
         vacancy = Vacancy.objects.create(
             title=item['title'],
-            specialty_id=item['specialty'],
+            specialty=Specialty.objects.get(code=item['specialty']),
             company_id=item['company_id'],
             skills=item['skills'],
             description=item['description'],
@@ -95,7 +110,10 @@ def write_data():
             user_id=item['user_id'],
         )
         print(resume)
+    print('Orm модели успешно заполнены!')
 
 
 if allow_recording:
     write_data()
+else:
+    print('Запись в бд запрещена! allow_recording - в значение False')
