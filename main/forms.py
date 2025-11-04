@@ -97,7 +97,7 @@ class MyResumeForm(forms.ModelForm):
         portfolio = self.cleaned_data['portfolio']
         if 'github.com' in portfolio or portfolio in '':
             return portfolio
-        raise ValidationError('Неизвестный источник')
+        raise ValidationError('Нужна ссылка вашего github')
 
 
 class SearchForm(forms.Form):

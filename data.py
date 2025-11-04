@@ -1,3 +1,15 @@
+users = [
+    {'username': 'user_1', 'first_name': 'Антон', 'last_name': 'Назаров'},
+    {'username': 'user_2', 'first_name': 'Антон', 'last_name': 'Митин'},
+    {'username': 'user_3', 'first_name': 'Никита', 'last_name': 'Соболев'},
+    {'username': 'user_4', 'first_name': 'Никита', 'last_name': 'Декабристов'},
+    {'username': 'user_5', 'first_name': 'Влад', 'last_name': 'Мишустин'},
+    {'username': 'user_6', 'first_name': 'Алексей', 'last_name': 'Голобурдин'},
+    {'username': 'user_7', 'first_name': 'Леся', 'last_name': 'Набока'},
+    {'username': 'user_8', 'first_name': 'Павед', 'last_name': 'Дуров'},
+    {'username': 'user_9', 'first_name': 'Иван', 'last_name': 'Иванов'},
+]
+
 jobs = [
     {"id": "1", "title": "Разработчик на Python", "specialty": "backend", "company": "3", "salary_from": "100000",
      "salary_to": "150000", "posted": "2020-03-11",
@@ -82,4 +94,20 @@ specialties = [
     {"code": "products", "title": "Продукты"},
     {"code": "management", "title": "Менеджмент"},
     {"code": "testing", "title": "Тестирование"},
+]
+
+applications = [
+    {'written_username': 'Иванов Иван', 'written_cover_letter': 'Возьмите меня пожалуйста!!!!', 'vacancy_id': 9, 'user_id': 8, 'written_phone': '+78005553535'},
+    {'written_username': 'Александра Бродко', 'written_cover_letter': "Я очень Грамотная питон разработчица. Такое умею, например print('Helo wort')", 'vacancy_id': 5, 'user_id': 8, 'written_phone': '+78008008080'},
+    {'written_username': 'Антон Волков', 'written_cover_letter': 'Работал в гугле, епле, амазоне и пятёрочке. Придумайте индивидуальные условия для меня, т.к я очень ценный сотрудник для любой компании!', 'vacancy_id': 5, 'user_id': 10, 'written_phone': '+79009009090'},
+    {'written_username': 'Вас Зовут', 'written_cover_letter': 'проверяю работает-ли отклик', 'vacancy_id': 9, 'user_id': 2, 'written_phone': '+78882229955'},
+    {'written_username': 'Петров Петр', 'written_cover_letter': 'Я лучший кандидат, берите меня пожалуйста!!!!', 'vacancy_id': 9, 'user_id': 8, 'written_phone': '+78005553535'},
+    {'written_username': 'Лизон Лиза', 'written_cover_letter': 'Пока искала работу закончились деньги, пришлось голодать... уже 38 день. Прожить без еды можно максимум 40дней. За 2дня устроите меня?)', 'vacancy_id': 1, 'user_id': 8, 'written_phone': '+78882223344'},
+]
+
+resume_all = [
+    {'name': 'Светлана', 'surname': 'Сергеевна', 'status': 'max_active', 'salary': 500000, 'grade': 'Junior', 'education': 'НТОТ - бывший 41 лицей; повар-технолог', 'experience': "ООО 'Та самая шаурма на средном!!!'", 'portfolio': 'https://github.com/Andrew-Tyurin', 'specialty_id': 'design', 'user_id': 2},
+    {'name': 'Саша', 'surname': 'Белов', 'status': 'active', 'salary': 300000, 'grade': 'senior', 'education': '4 класса начальной школы!', 'experience': 'Яндекс...  доставка', 'portfolio': '', 'specialty_id': 'gamedev', 'user_id': 3},
+    {'name': 'Иван', 'surname': 'Иванов', 'status': 'max_active', 'salary': 29000, 'grade': 'intern', 'education': '8 классов', 'experience': 'Свой бизнес', 'portfolio': '', 'specialty_id': 'products', 'user_id': 4},
+    {'name': 'Костя', 'surname': 'Умный', 'status': 'active', 'salary': 1000000, 'grade': 'senior', 'education': '3 класса начальной школы.(в 3 оставался на 2год, на 3год уже не разрешили)', 'experience': 'Яндекс...  доставка', 'portfolio': '', 'specialty_id': 'products', 'user_id': 7},
 ]
